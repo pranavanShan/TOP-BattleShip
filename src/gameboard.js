@@ -26,7 +26,7 @@ class gameBoard {
     )
       return false;
     if (y + (length - 1) > 9 && direction) return false;
-    if (x + (length - 1) > 9 && !direction) return false;
+    if (x + (length - 1) > 9 && direction == false) return false;
     let position = this.board[y][x];
     for (let i = 0; i < length - 1; i++) {
       if (position !== 0) {
@@ -73,13 +73,6 @@ class gameBoard {
     }
   }
 
-  //Receieveattack needs to think about recording hits
-  //Each ship has a unique ID link to an object which records all ship classes
-  // Each of these records can use ship functions (such as hit() and issunk())
-  // Need to mark a hit if occured to ensure that someone can't farm one area 
-  // Same thinking even if they miss because other wise the game could potentially go on forever 
-  //thinking miss could b like a chararcter or smth cus 0 = empty, and numbers will need to be the IDs of ship objects
-  // so only available one which wouldnt cause potential issues later would probably be a character such as "a" or something
 }
 
 
