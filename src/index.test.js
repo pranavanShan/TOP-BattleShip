@@ -24,6 +24,24 @@ describe('Ship Tests' ,  () => {
     })
 
 
+    test('Tests board creation', () => {
+        let newBoard = new gameBoard()
+        expect(newBoard.board.length).toBe(10)
+        expect(newBoard.board[0].length).toBe(10)
+        expect(newBoard.placeShip([0,6], 4, false)).toBeTruthy()
+        expect(newBoard.placeShip([0,6], 4, false)).toBeFalsy()
+        expect(newBoard.board[0][6]).toBe(1)
+        expect(newBoard.ships[newBoard.board[0][6]]).toEqual(newBoard.ships[newBoard.board[0][7]])
+        expect(newBoard.placeShip([1,6], 4, true)).toBeTruthy()
+        expect(newBoard.board[1][6]).toBe(2)
+        expect(newBoard.board[2][6]).toBe(2)
+        expect(newBoard.board[3][6]).toBe(2)
+        expect(newBoard.board[4][6]).toBe(2)
+        expect(newBoard.ships[newBoard.board[1][6]]).toStrictEqual(newBoard.ships[newBoard.board[4][6]])
+        expect(newBoard.ships[newBoard.board[1][6]].isSunk()).toBeFalsy()
+    })
+
+
 })
 
 
