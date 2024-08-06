@@ -66,8 +66,8 @@ class gameBoard {
       this.shotsHit++
       this.ships[this.board[y][x]].hit()
       this.ships[this.board[y][x]].isSunk()
+      if(this.ships[this.board[y][x]].isSunk()) this.lostShips++
       this.board[y][x] = -2
-      if(this.ships[this.board[y][x]].isSunk) this.lostShips++
       if(this.totalShips === this.lostShips) this.lost = true
       return true
     }
