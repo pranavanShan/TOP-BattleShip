@@ -9,11 +9,12 @@ class gameBoard {
       }
       return array;
     })();
-    this.shots = 0;
+    this.totalShots = 0;
     this.shotsHit = 0;
     this.lostShips = 0;
     this.totalShips = 0;
     this.ships = {};
+    this.lost = false;
   }
 
   pathAvailable(coordinates, length, direction) {
@@ -49,9 +50,32 @@ class gameBoard {
     return true;
   }
 
+  // -1 = miss, -2 = hit
+  receiveAttack(coordinates) {
+    let [y,x] = [...coordinates]
+    if(this.board[y] === undefined || this.board[y][x] === undefined) return false
+    this.totalShots++
+    if(this.board[y][x] < 0) {
+      return false
+    }
+    if(this.board[y][x] === 0) {
+      this.board[y][x] = -1
+      return true
+    }
+    if(this.board[y][x] > 0) {
+      this.shotsHit++
+      this.ships[this.board[y][x]].hit()
+      this.ships[this.board[y][x]].isSunk()
+      this.board[y][x] = -2
+      if(this.ships[this.board[y][x]].isSunk) this.lostShips++
+      if(this.totalShips === this.lostShips) this.lost = true
+      return true
+    }
+  }
+
   //Receieveattack needs to think about recording hits
   //Each ship has a unique ID link to an object which records all ship classes
-  // Each of these records can use ship functions (such as hit() and issunK())
+  // Each of these records can use ship functions (such as hit() and issunk())
   // Need to mark a hit if occured to ensure that someone can't farm one area 
   // Same thinking even if they miss because other wise the game could potentially go on forever 
   //thinking miss could b like a chararcter or smth cus 0 = empty, and numbers will need to be the IDs of ship objects
