@@ -52,30 +52,28 @@ class gameBoard {
 
   // -1 = miss, -2 = hit
   receiveAttack(coordinates) {
-    let [y,x] = [...coordinates]
-    if(this.board[y] === undefined || this.board[y][x] === undefined) return false
-    this.totalShots++
-    if(this.board[y][x] < 0) {
-      return false
+    let [y, x] = [...coordinates];
+    if (this.board[y] === undefined || this.board[y][x] === undefined)
+      return false;
+    this.totalShots++;
+    if (this.board[y][x] < 0) {
+      return false;
     }
-    if(this.board[y][x] === 0) {
-      this.board[y][x] = -1
-      return true
+    if (this.board[y][x] === 0) {
+      this.board[y][x] = -1;
+      return true;
     }
-    if(this.board[y][x] > 0) {
-      this.shotsHit++
-      this.ships[this.board[y][x]].hit()
-      this.ships[this.board[y][x]].isSunk()
-      if(this.ships[this.board[y][x]].isSunk()) this.lostShips++
-      this.board[y][x] = -2
-      if(this.totalShips === this.lostShips) this.lost = true
-      return true
+    if (this.board[y][x] > 0) {
+      this.shotsHit++;
+      this.ships[this.board[y][x]].hit();
+      this.ships[this.board[y][x]].isSunk();
+      if (this.ships[this.board[y][x]].isSunk()) this.lostShips++;
+      this.board[y][x] = -2;
+      if (this.totalShips === this.lostShips) this.lost = true;
+      return true;
     }
   }
-
 }
-
-
 
 //A potential thought for constructing AI for this game.
 // Probably use that algorithm you just made (potential kngiht chess moves). Somewhat similar logic.

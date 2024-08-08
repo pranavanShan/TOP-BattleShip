@@ -1,6 +1,7 @@
 import "./style.css";
 import {Ship} from "./ships.js";
 import {gameBoard} from "./gameboard.js";
+import { player } from "./player.js";
 //use ESLint! (Right click should show reformat doc, make sure to have VS code install ESLint)
 //If you get an error saying ./src/src couldn't be found, you've used npx webpack in the wrong directory, needs to be in the project folder, not src.
 //Need to implement Jest
@@ -15,5 +16,6 @@ import {gameBoard} from "./gameboard.js";
 
 export {
     Ship,
-    gameBoard
+    gameBoard,
+    player
 };
