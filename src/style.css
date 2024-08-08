@@ -1,0 +1,24 @@
+body {
+    display: flex;
+    gap: 50px;
+}
+
+.gameboard {
+    display: flex;
+    height: 500px;
+    width: 500px;
+}
+
+.part {
+    border: 1px solid black;
+    height: 48px;
+    width: 48px;
+    cursor: pointer;
+}
+
+.inactivePart {
+    pointer-events: none;
+}
+.inactiveBoard {
+    pointer-events: none;
+}

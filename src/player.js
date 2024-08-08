@@ -20,7 +20,6 @@ class player {
     }
     return true;
   }
-
 }
 
 //think this class only exists to make a computer player?
