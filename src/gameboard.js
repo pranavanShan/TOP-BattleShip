@@ -32,7 +32,9 @@ class gameBoard {
       if (position !== 0) {
         return false;
       }
-      position = direction ? this.board[y + 1][x] : this.board[y][x + 1];
+      if(direction) y++
+      else if(!direction) x++
+      position = this.board[y][x]
     }
     return true;
   }

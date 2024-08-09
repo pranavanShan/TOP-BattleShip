@@ -14,12 +14,12 @@ import { player } from "./player.js";
 let player1 = new player();
 let player2 = new player();
 
-player1.board.placeShip([0, 0], 2, true);
-player1.board.placeShip([2, 0], 3, false);
-player1.board.placeShip([9, 5], 3, false);
-player1.board.placeShip([0, 5], 3, false);
-player1.board.placeShip([0, 9], 5, true);
+player1.board.placeShip([7, 7], 3, false);
+player1.board.placeShip([5,9], 4, true)
+//placeboard wasnt tested properly doesnt work 
+
 player2.computerPlace();
+
 
 //jest doesnt work cus of style.css
 //dosnt rly matter cus told not to test css anyway so
@@ -88,6 +88,7 @@ function turnController(player1Grid, player2Grid) {
       });
       player2Grid.childNodes[i].childNodes[j].addEventListener("click", () => {
         robotAttackDOM(player1, player1Grid)
+        console.log(player2.board)
         changeTurns(player1Grid, player2Grid)
         changeTurns(player1Grid, player2Grid);
       });
