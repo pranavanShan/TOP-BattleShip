@@ -2,34 +2,19 @@ import "./style.css";
 import { Ship } from "./ships.js";
 import { gameBoard } from "./gameboard.js";
 import { player } from "./player.js";
-//use ESLint! (Right click should show reformat doc, make sure to have VS code install ESLint)
-//If you get an error saying ./src/src couldn't be found, you've used npx webpack in the wrong directory, needs to be in the project folder, not src.
-//Need to implement Jest
-// TDD boils down to:
-// Red: Make a test, make it fail
-// Yellow: Make a solution that passes the test, no matter how ugly or wrong the code is
-// Green: Refactor the code to make it functional
-// Repeat until program is done
+const navbar = document.createElement("div");
+const title = document.createElement("h1");
+title.textContent = "Battleship";
+navbar.classList.add("navbar");
+navbar.append(title);
+document.body.append(navbar);
 
-let player1 = new player();
-let player2 = new player();
-
-player1.board.placeShip([7, 7], 3, false);
-player1.board.placeShip([5,9], 4, true)
-//placeboard wasnt tested properly doesnt work 
-
-player2.computerPlace();
-
-
-//jest doesnt work cus of style.css
-//dosnt rly matter cus told not to test css anyway so
-// need to find out how to make robot to moves and have it rejister
-function createPlayerGrid(player) {
+function createPlayerGrid() {
   const playerGrid = document.createElement("div");
   playerGrid.classList.add("gameboard");
-  for (let i = 0; i < player.board.board.length; i++) {
+  for (let i = 0; i < 10; i++) {
     const row = document.createElement("div");
-    for (let j = 0; j < player.board.board[i].length; j++) {
+    for (let j = 0; j < 10; j++) {
       const part = document.createElement("div");
       part.classList.add("part");
       row.append(part);
@@ -56,40 +41,35 @@ function receieveAttackDOM(player, playerGrid) {
   }
 }
 
-
 function robotAttackDOM(player, playerGrid) {
-  let coords = [player.getRandomInteger(0,10), player.getRandomInteger(0,10)]
-  let result = player.board.receiveAttack(coords)
-  while(result === false) {
-    coords = [player.getRandomInteger(0,10), player.getRandomInteger(0,10)]
-    result = player.board.receiveAttack(coords)
+  let coords = [player.getRandomInteger(0, 10), player.getRandomInteger(0, 10)];
+  let result = player.board.receiveAttack(coords);
+  while (result === false) {
+    coords = [player.getRandomInteger(0, 10), player.getRandomInteger(0, 10)];
+    result = player.board.receiveAttack(coords);
   }
-  let [y, x] = [...coords]
-  if(player.board.board[y][x] == -1) {
-    playerGrid.childNodes[x].childNodes[y].style.backgroundColor = "grey"
+  let [y, x] = [...coords];
+  if (player.board.board[y][x] == -1) {
+    playerGrid.childNodes[x].childNodes[y].style.backgroundColor = "grey";
   }
-  if(player.board.board[y][x] == -2) {
-    playerGrid.childNodes[x].childNodes[y].style.backgroundColor = "red"
+  if (player.board.board[y][x] == -2) {
+    playerGrid.childNodes[x].childNodes[y].style.backgroundColor = "red";
   }
 
-  if(player.board.lost) console.log("lost!")
+  if (player.board.lost) console.log("lost!"); //lose logic
 
-  return true
+  return true;
 }
-
-
 
 function turnController(player1Grid, player2Grid) {
   for (let i = 0; i < player1Grid.childNodes.length; i++) {
     for (let j = 0; j < player1Grid.childNodes[i].childNodes.length; j++) {
       player1Grid.childNodes[i].childNodes[j].addEventListener("click", () => {
         changeTurns(player1Grid, player2Grid);
-        
       });
       player2Grid.childNodes[i].childNodes[j].addEventListener("click", () => {
-        robotAttackDOM(player1, player1Grid)
-        console.log(player2.board)
-        changeTurns(player1Grid, player2Grid)
+        robotAttackDOM(player1, player1Grid);
+        changeTurns(player1Grid, player2Grid);
         changeTurns(player1Grid, player2Grid);
       });
     }
@@ -106,14 +86,35 @@ function changeTurns(playerGrid, player2Grid) {
   }
 }
 
-const player1Grid = createPlayerGrid(player1);
-const player2Grid = createPlayerGrid(player2);
+function placerDOM() {
+  //changes div to and amount of times placeable
+  //so we're gonnna do it like https://seb-graf.github.io/battleship/ for placing logic
+  //use part class btw
+  //play btn should disapear when clicked obs and replaced with showcasing whos turn it is
+}
+
+const playField = document.createElement("div");
+const player1Grid = createPlayerGrid();
+const player2Grid = createPlayerGrid();
+const gameStartContainer = document.createElement("div");
+const gameStartBTN = document.createElement("button");
+const placer = document.createElement("div");
+gameStartBTN.classList.add("gameStartBTN");
+gameStartBTN.textContent = "Play.";
+gameStartContainer.append(gameStartBTN);
+let player1 = new player();
+let player2 = new player();
 receieveAttackDOM(player1, player1Grid, player2, player2Grid);
 receieveAttackDOM(player2, player2Grid, player1, player1Grid);
 player1Grid.classList.add("inactiveBoard");
 turnController(player1Grid, player2Grid);
-document.body.append(player1Grid);
-document.body.append(player2Grid);
+playField.append(player1Grid);
+playField.append(gameStartContainer);
+playField.append(player2Grid);
+playField.classList.add("playField");
+
+document.body.append(playField);
+
 export { Ship, gameBoard, player };
 
 /* 
@@ -131,26 +132,3 @@ export { Ship, gameBoard, player };
  Y
 board [y][x]
 */
-
-/*
-part.addEventListener("click", () => {
-        player.board.receiveAttack([j, i]);
-        if (player.board.board[j][i] === -2) {
-          part.style.backgroundColor = "red";
-          part.classList.add("inactivePart");
-        }
-        if (player.board.board[j][i] === -1) {
-          part.style.backgroundColor = "grey";
-          part.classList.add("inactivePart");
-        }
-        document
-          .querySelectorAll(".inactiveBoard")[0]
-          .classList.remove("inactiveBoard");
-        playerGrid.classList.add("inactiveBoard");
-        if (player.board.lost) {
-          //lose logic here
-        }
-      });
-
-
-      */

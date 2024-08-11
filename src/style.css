@@ -1,6 +1,33 @@
 body {
     display: flex;
-    gap: 50px;
+    gap: 75px;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+
+.navbar {
+    border-bottom: 2.3px solid black;
+    display: flex;
+    justify-content: flex-start;
+    
+}
+
+
+.playField {
+    display: flex;
+    gap: 10px;
+    justify-content: space-around;
+}
+
+.gameStartBTN {
+    cursor: pointer;
+    background-color: white;
+    border: 2.3px solid black;
+    padding: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .gameboard {
@@ -13,7 +40,7 @@ body {
     border: 1px solid black;
     height: 48px;
     width: 48px;
-    cursor: pointer;
+    cursor: crosshair;
 }
 
 .inactivePart {
