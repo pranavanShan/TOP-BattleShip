@@ -28,6 +28,7 @@ function receieveAttackDOM(player, playerGrid) {
   for (let i = 0; i < player.board.board.length; i++) {
     for (let j = 0; j < player.board.board[i].length; j++) {
       let currentNode = playerGrid.childNodes[i].childNodes[j];
+      currentNode.classList.add("attackPart");
       currentNode.addEventListener("click", () => {
         player.board.receiveAttack([j, i]);
         currentNode.classList.add("inactivePart");
@@ -105,7 +106,6 @@ function placerDOM(index, formation, direction) {
     event.dataTransfer.setData("text", event.target.childNodes.length)
   })
   ship.addEventListener('dragend', () => {
-    console.log("lol2")
   })
   return ship
 }
@@ -170,18 +170,22 @@ function gameBoardplacerDOM(player, playerGrid) {
 
 
 
+
+
 const playField = document.createElement("div");
+let player1 = new player();
+let player2 = new player();
 const player1Grid = createPlayerGrid();
 const player2Grid = createPlayerGrid();
 const gameStartContainer = document.createElement("div");
 gameStartContainer.classList.add("gameStartContainer")
 const gameStartBTN = document.createElement("button");
 
-gameStartBTN.classList.add("gameStartBTN");
+gameStartBTN.classList.add("BTN");
+gameStartBTN.style.display = "none"
 gameStartBTN.textContent = "Play.";
 gameStartContainer.append(gameStartBTN);
-let player1 = new player();
-let player2 = new player();
+
 
 gameBoardplacerDOM(player1, player1Grid)
 // receieveAttackDOM(player1, player1Grid, player2, player2Grid);
@@ -193,7 +197,23 @@ playField.append(player1Grid);
 playField.append(gameStartContainer);
 playField.append(player2Grid);
 
+const changeDirectionBTN = document.createElement("button")
+changeDirectionBTN.textContent = "Direction"
+changeDirectionBTN.classList.add("BTN")
+changeDirectionBTN.onclick = () => {
+  if (ships[0].style.display == "block") ships[0].style.display = "flex"
+  else ships[0].style.display = "block"
+}
+gameStartContainer.append(changeDirectionBTN)
 
+const resetBTN = document.createElement("div")
+resetBTN.textContent = "reset"
+resetBTN.classList.add("BTN")
+resetBTN.onclick = () => {
+  location.reload()
+}
+
+gameStartContainer.append(resetBTN)
 let formation = [2, 3, 3, 4, 5]
 for (let i = 0; i < formation.length; i++) {
   const ship = placerDOM(i, formation, true)
@@ -204,13 +224,7 @@ const ships = gameStartContainer.getElementsByClassName("ship")
 ships[0].style.display = "block"
 
 
-const changeDirectionBTN = document.createElement("button")
-changeDirectionBTN.textContent = "Direction"
-changeDirectionBTN.onclick = () => {
-  if (ships[0].style.display == "block") ships[0].style.display = "flex"
-  else ships[0].style.display = "block"
-}
-gameStartContainer.append(changeDirectionBTN)
+
 playField.classList.add("playField");
 
 document.body.append(playField);

@@ -34,8 +34,8 @@ class gameBoard {
       if (position !== 0) {
         return false;
       }
-      if(direction) y++
-      else if(!direction) x++
+      if(direction && y < 9) y++
+      else if(!direction && x < 9) x++
       position = this.board[y][x]
     }
     return true;
