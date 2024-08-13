@@ -18,6 +18,8 @@ class gameBoard {
   }
 
   pathAvailable(coordinates, length, direction) {
+    //stupid faggot ass function doesnt work >:(
+    //doesnt properly check if indexes are available before, so lots of undefined errors (cant read properties of undefined)
     let [y, x] = [...coordinates];
     if (
       this.board[y] === undefined ||
