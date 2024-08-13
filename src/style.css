@@ -17,8 +17,7 @@ body {
 
 .playField {
     display: flex;
-    gap: 10px;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 .gameStartBTN {
@@ -30,16 +29,37 @@ body {
     padding-right: 20px;
 }
 
+.gameStartContainer {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    min-width: 500px;
+
+}
+
 .gameboard {
     display: flex;
     height: 500px;
     width: 500px;
 }
 
-.part {
+
+.part, .placerpart {
     border: 1px solid black;
     height: 48px;
     width: 48px;
+}
+
+.placerpart {
+    cursor: pointer;
+}
+
+.highlight {
+    border: 1px solid red;
+    background-color: red;
+}
+.part {
     cursor: crosshair;
 }
 
@@ -49,3 +69,4 @@ body {
 .inactiveBoard {
     pointer-events: none;
 }
+
