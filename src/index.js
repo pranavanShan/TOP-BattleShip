@@ -91,72 +91,78 @@ function placerDOM(index, formation, direction) {
   //so we're gonnna do it like https://igorashs.github.io/vue-battleship/ for placing logic
   //use part class btw
   //play btn should disapear when clicked obs and replaced with showcasing whos turn it is
-  document.querySelectorAll('.ship').forEach(e => e.remove());
+
   let ship = document.createElement('div')
-    for(let j = 0; j < formation[index]; j++) {
-      const part = document.createElement('div')
-      part.classList.add('placerpart')
-      ship.append(part)
-    }
-    if(!direction) ship.style.display = "flex"
-    ship.draggable = "true";
-    ship.classList.add("ship")
-    ship.addEventListener('dragstart', (event) => {
-      event.dataTransfer.setData("text", event.target.childNodes.length)
-    })
-    ship.addEventListener('dragend', () => {
-      console.log("lol2")
-    })
-    return ship
+  for (let j = 0; j < formation[index]; j++) {
+    const part = document.createElement('div')
+    part.classList.add('placerpart')
+    ship.append(part)
+  }
+  if (!direction) ship.style.display = "flex"
+  ship.draggable = "true";
+  ship.classList.add("ship")
+  ship.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData("text", event.target.childNodes.length)
+  })
+  ship.addEventListener('dragend', () => {
+    console.log("lol2")
+  })
+  return ship
 }
 
 
 function gameBoardplacerDOM(player, playerGrid) {
-  for(let i = 0; i < playerGrid.childNodes.length; i++) {
-    for(let j = 0; j < playerGrid.childNodes[i].childNodes.length; j++) {
+  for (let i = 0; i < playerGrid.childNodes.length; i++) {
+    for (let j = 0; j < playerGrid.childNodes[i].childNodes.length; j++) {
       let current = playerGrid.childNodes[i].childNodes[j]
       current.addEventListener('dragover', (event) => {
         event.preventDefault()
         return false
-
       })
       current.addEventListener('dragenter', (event) => {
-        //helpful https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
-        //is based on where the mouse cursor is not on where the item is which makes it confusing :(
-        //alot of this is monkey code btw doesnt consider alot of stuff like user changing direction 
-        
-        current.classList.add('highlight')
-        
-        
-        
-        
+        let ships = document.getElementsByClassName("ship")
+        let direction = ships[0].style.display === "flex" ? false : true
+        let length = ships[0].childNodes.length
+        if (player.board.pathAvailable([j, i], length, direction)) {
+          current.classList.add('highlight')
+        } else {
+          current.classList.add('unplacable')
+        }
       })
 
       current.addEventListener('dragleave', (event) => {
         current.classList.remove('highlight')
-      
+        current.classList.remove('unplacable')
       })
 
-
+      //to do:
+      //reset button
+      //random placements button (alr have the function logic wise jusdt need to use it for DOM)
       current.addEventListener('drop', (event) => {
-        //to do:
-        //make it possible to change direction and have it not just be visual
-        //make a fn that goes thro entire rotation of ships
-        //account for when somewhere has alr been placed/isnt available
-        //reset button
-        //random placements button (alr have the function logic wise jusdt need to use it for DOM)
         event.preventDefault()
+        current.classList.remove('highlight')
+        current.classList.remove('unplacable')
         let length = event.dataTransfer.getData("text")
-        let ship2 = document.getElementsByClassName("ship")[0]
-        //maybe just make a queue system with ships via classNmae (cus class names returns an array)
-        //so make a full 'queue' with all ships.
-        //have [0] be visible and placable. All other ships are hidden and unplacable.
-        //then remove
-        //once the queue is empty, make the game startable.
-        ship2.remove()
-        player.board.placeShip([j, i], length, true)
+        let ships = document.getElementsByClassName("ship")
+        let direction = ships[0].style.display === "flex" ? false : true
+        if (player.board.placeShip([j, i], length, direction)) {
+          let iC = i
+          let jC = j
+          let currentC = current
+          for (let a = 0; a < length; a++) {
+            currentC.classList.add("placedShip")
+            if (direction && jC < 9) jC++
+            if (!direction && iC < 9) iC++
+            currentC = playerGrid.childNodes[iC].childNodes[jC]
+          }
+          ships[0].remove()
+        }
+        else {
+          return false
+        }
+        if (ships.length > 0) ships[0].style.display = "block"
         console.log(player.board.board)
-        
+
       })
     }
   }
@@ -176,25 +182,39 @@ gameStartBTN.textContent = "Play.";
 gameStartContainer.append(gameStartBTN);
 let player1 = new player();
 let player2 = new player();
-receieveAttackDOM(player1, player1Grid, player2, player2Grid);
+
 gameBoardplacerDOM(player1, player1Grid)
-receieveAttackDOM(player2, player2Grid, player1, player1Grid);
-gameBoardplacerDOM(player2, player2Grid)
-player2Grid.classList.add("inactiveBoard"); 
-turnController(player1Grid, player2Grid);
+// receieveAttackDOM(player1, player1Grid, player2, player2Grid);
+// receieveAttackDOM(player2, player2Grid, player1, player1Grid);
+// turnController(player1Grid, player2Grid)
+player2Grid.classList.add("inactiveBoard");
+
 playField.append(player1Grid);
 playField.append(gameStartContainer);
 playField.append(player2Grid);
 
+
+let formation = [2, 3, 3, 4, 5]
+for (let i = 0; i < formation.length; i++) {
+  const ship = placerDOM(i, formation, true)
+  ship.style.display = "none"
+  gameStartContainer.append(ship)
+}
+const ships = gameStartContainer.getElementsByClassName("ship")
+ships[0].style.display = "block"
+
+
 const changeDirectionBTN = document.createElement("button")
 changeDirectionBTN.textContent = "Direction"
-let formation = [2,3,3,4,5]
-changeDirectionBTN.onclick = () => {gameStartContainer.append(placerDOM(0, formation, false)) }
-gameStartContainer.append(placerDOM(1, formation, true))
+changeDirectionBTN.onclick = () => {
+  if (ships[0].style.display == "block") ships[0].style.display = "flex"
+  else ships[0].style.display = "block"
+}
 gameStartContainer.append(changeDirectionBTN)
 playField.classList.add("playField");
 
 document.body.append(playField);
+
 
 export { Ship, gameBoard, player };
 

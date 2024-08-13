@@ -28,7 +28,7 @@ class gameBoard {
     if (y + (length - 1) > 9 && direction) return false;
     if (x + (length - 1) > 9 && direction == false) return false;
     let position = this.board[y][x];
-    for (let i = 0; i < length - 1; i++) {
+    for (let i = 0; i < length; i++) {
       if (position !== 0) {
         return false;
       }

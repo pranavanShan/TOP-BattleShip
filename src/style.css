@@ -56,8 +56,17 @@ body {
 }
 
 .highlight {
+    border: 1px solid green;
+    background-color: green;
+}
+
+.unplacable {
     border: 1px solid red;
-    background-color: red;
+    background-color: white;
+}
+
+.placedShip {
+    background-color: grey;
 }
 .part {
     cursor: crosshair;
