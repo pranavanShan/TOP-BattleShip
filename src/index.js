@@ -75,7 +75,6 @@ function robotAttackDOM(player, playerGrid) {
     navbar.classList.add("blur");
     document.body.append(gameOverDOM);
   }
-  console.log(player.board)
   return true;
 }
 
