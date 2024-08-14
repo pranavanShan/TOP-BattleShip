@@ -18,8 +18,6 @@ class gameBoard {
   }
 
   pathAvailable(coordinates, length, direction) {
-    //stupid faggot ass function doesnt work >:(
-    //doesnt properly check if indexes are available before, so lots of undefined errors (cant read properties of undefined)
     let [y, x] = [...coordinates];
     if (
       this.board[y] === undefined ||
@@ -34,15 +32,14 @@ class gameBoard {
       if (position !== 0) {
         return false;
       }
-      if(direction && y < 9) y++
-      else if(!direction && x < 9) x++
-      position = this.board[y][x]
+      if (direction && y < 9) y++;
+      else if (!direction && x < 9) x++;
+      position = this.board[y][x];
     }
     return true;
   }
 
   placeShip(coordinates, length, direction) {
-    //true = vertical , false = horizontal
     let [y, x] = [...coordinates];
     if (!this.pathAvailable(coordinates, length, direction)) return false;
     this.totalShips++;
@@ -54,7 +51,6 @@ class gameBoard {
     return true;
   }
 
-  // -1 = miss, -2 = hit
   receiveAttack(coordinates) {
     let [y, x] = [...coordinates];
     if (this.board[y] === undefined || this.board[y][x] === undefined)
@@ -79,23 +75,4 @@ class gameBoard {
   }
 }
 
-//A potential thought for constructing AI for this game.
-// Probably use that algorithm you just made (potential kngiht chess moves). Somewhat similar logic.
-// Would maybe need to quantify 'stupid' and 'smart' moves the bot can choose at random so the bot isnt just op
 export { gameBoard };
-
-/* 
-      0 1 2 3 4 5 6 7 8 9  X
- 0   [0,0,0,0,0,0,0,0,0,0]
- 1   [0,0,0,0,0,0,0,0,0,0]
- 2   [0,0,0,0,0,0,0,0,0,0]
- 3   [0,0,0,0,0,0,0,0,0,0]
- 4   [0,0,0,0,0,0,0,0,0,0]
- 5   [0,0,0,0,0,0,0,0,0,0]
- 6   [0,0,0,0,0,0,0,0,0,0]
- 7   [0,0,0,0,0,0,0,0,0,0]
- 8   [0,0,0,0,0,0,0,0,0,0]
- 9   [0,0,0,0,0,0,0,0,0,0]
- Y
-board [y][x]
-*/

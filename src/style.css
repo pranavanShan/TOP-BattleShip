@@ -81,3 +81,22 @@ body {
     pointer-events: none;
 }
 
+.playAgainBox {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    background-color: white;
+    width: 250px;
+    height: 250px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2.3px solid black;
+    top: 0;
+}
+
+.blur {
+    filter: blur(2.3px);
+}
