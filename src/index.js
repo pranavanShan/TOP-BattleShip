@@ -75,7 +75,7 @@ function robotAttackDOM(player, playerGrid) {
     navbar.classList.add("blur");
     document.body.append(gameOverDOM);
   }
-
+  console.log(player.board)
   return true;
 }
 
@@ -149,7 +149,7 @@ function gameBoardplacerDOM(player, playerGrid) {
         event.preventDefault();
         current.classList.remove("highlight");
         current.classList.remove("unplacable");
-        let length = event.dataTransfer.getData("text");
+        let length = parseInt(event.dataTransfer.getData("text"));
         let ships = document.getElementsByClassName("ship");
         let direction = ships[0].style.display === "flex" ? false : true;
         if (player.board.placeShip([j, i], length, direction)) {
